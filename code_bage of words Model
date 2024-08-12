@@ -1,0 +1,37 @@
+import nltk
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
+nltk.download('punkt')
+nltk.download('stopwords')
+# Sample text data
+documents = [
+    "Natural language processing is fascinating.",
+    "Text mining involves extracting useful information from text.",
+    "Machine learning can be used for sentiment analysis.",
+]
+
+# Text preprocessing
+def preprocess_text(text):
+    # Tokenization
+    tokens = nltk.word_tokenize(text.lower())
+    # Removing stop words
+    stop_words = set(nltk.corpus.stopwords.words('english'))
+    tokens = [word for word in tokens if word not in stop_words]
+    return ' '.join(tokens)
+
+# Preprocess documents
+preprocessed_documents = [preprocess_text(doc) for doc in documents]
+
+# Bag of Words model
+vectorizer = CountVectorizer()
+X_bow = vectorizer.fit_transform(preprocessed_documents)
+print("Bag of Words Model:")
+print(vectorizer.get_feature_names_out())
+print(X_bow.toarray())
+
+# TF-IDF model
+tfidf_vectorizer = TfidfVectorizer()
+X_tfidf = tfidf_vectorizer.fit_transform(preprocessed_documents)
+print("\nTF-IDF Model:")
+print(tfidf_vectorizer.get_feature_names_out())
+print(X_tfidf.toarray())
